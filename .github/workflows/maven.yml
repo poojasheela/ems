@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -26,3 +25,6 @@ jobs:
 
       - name: Run Tests
         run: mvn test
+
+      - name: Build with Maven (with tests)
+        run: mvn -B clean package
