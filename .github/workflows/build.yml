@@ -9,8 +9,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    outputs:
-      artifact-path: ${{ steps.upload-artifact.outputs.artifact-path }}
+#    outputs:
+#      artifact-path: ${{ steps.upload-artifact.outputs.artifact-path }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,13 +24,13 @@ jobs:
       # Build project (skip tests)
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests
-
-      # Upload target folder as artifact
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: spring-app
-          path: target/
+#
+#      # Upload target folder as artifact
+#      - name: Upload build artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: spring-app
+#          path: target/
 
   test:
     runs-on: windows-latest
@@ -39,12 +39,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Download the artifact from build job
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: spring-app
-          path: target/
+#      # Download the artifact from build job
+#      - name: Download build artifact
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: spring-app
+#          path: target/
 
       # Run tests
       - name: Run tests
