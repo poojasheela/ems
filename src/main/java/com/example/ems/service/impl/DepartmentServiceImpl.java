@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.util.Optional;
 
 @Slf4j
@@ -36,24 +35,31 @@ public class DepartmentServiceImpl implements DepartmentService {
                                     new DepartmentDTO( saved.getName(), saved.getCreatedTimestamp(), saved.getLastUpdatedTimestamp())));
                 });
     }
-
     @Override
     public Mono<Response> update(String id, DepartmentDTO dto) {
         return departmentRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DepartmentNotFoundException("Department not found with ID: " + id)))
-                .flatMap(existing -> {
-                    return departmentRepository.existsByName(dto.getName())
-                            .flatMap(exists -> {
-                                if (!existing.getName().equalsIgnoreCase(dto.getName()) && exists) {
-                                    return Mono.error(new DataConflictException("Another department with name '" + dto.getName() + "' already exists."));
-                                }
-                                existing.setName(dto.getName());
-                                return departmentRepository.save(existing)
-                                        .map(updated -> {
-                                            log.info("Updated department with ID: {}", id);
-                                            return Response.success("Department updated", new DepartmentDTO( updated.getName(), updated.getCreatedTimestamp(), updated.getLastUpdatedTimestamp()));
-                                        });
-                            });
+                .flatMap(existing -> departmentRepository.findByNameIgnoreCase(dto.getName())
+                        .flatMap(conflict -> {
+                            if (!conflict.getId().equals(existing.getId())) {
+                                return Mono.error(new DataConflictException(
+                                        "Another department with name '" + dto.getName() + "' already exists."));
+                            }
+
+                            existing.setName(dto.getName());
+                            return departmentRepository.save(existing);
+                        })
+                        .switchIfEmpty(Mono.defer(() -> {
+                            existing.setName(dto.getName());
+                            return departmentRepository.save(existing);
+                        }))
+                )
+                .map(updated -> {
+                    log.info(" Updated department with ID: {}", id);
+                    return Response.success(
+                            "Department updated",
+                            new DepartmentDTO(updated.getName(), updated.getCreatedTimestamp(), updated.getLastUpdatedTimestamp())
+                    );
                 });
     }
 
@@ -62,8 +68,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.findById(id)
                 .switchIfEmpty(Mono.error(new DepartmentNotFoundException("Department not found with ID: " + id)))
                 .flatMap(existing -> departmentRepository.delete(existing)
-                        .thenReturn(Response.success("Department deleted with ID: " + id, null)));
+                        .then(Mono.fromCallable(() -> {
+                            log.info("🗑️ Deleted department with ID: {}", id);
+                            return Response.success("Department deleted successfully with ID: " + id, null);
+                        }))
+                );
     }
+
+
 
     @Override
     public Flux<DepartmentDTO> getAll() {
@@ -82,6 +94,8 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .switchIfEmpty(Mono.error(new DepartmentNotFoundException("Department not found with ID: " + id)))
                 .map(dept -> Response.success("Department fetched", dept));
     }
+
+
     @Override
     public Mono<Response> getByName(Optional<String> name) {
         if (name.isPresent()) {

@@ -2,7 +2,6 @@ package com.example.ems.response;
 
 import lombok.Data;
 import reactor.core.publisher.Flux;
-
 @Data
 public class RandomUserResponse {
     private Flux<Result> results;

@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import static com.example.ems.constants.Constants.*;
+
 @EnableMethodSecurity
 @RequiredArgsConstructor
 @Configuration
@@ -33,10 +35,10 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(auth -> auth
                         .pathMatchers(SWAGGER_WHITELIST).permitAll()
-                        .pathMatchers(HttpMethod.POST, "/employees/**", "/departments/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, "/employees/**", "/departments/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.DELETE, "/employees/**", "/departments/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.GET, "/employees/**", "/departments/**").hasAnyRole("ADMIN", "USER")
+                        .pathMatchers(HttpMethod.POST, EMPLOYEE_ADD,DEPARTMENT_ADD ).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, EMPLOYEE_BASE, DEPARTMENT_BASE).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, EMPLOYEE_BASE, DEPARTMENT_BASE).hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, EMPLOYEE_BASE, DEPARTMENT_BASE).hasAnyRole("ADMIN", "USER")
                         .anyExchange().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

@@ -9,13 +9,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 import java.util.Optional;
 @Slf4j
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/ems/employee")
 @RequiredArgsConstructor
 @Tag(name = "Employee API", description = "Endpoints for managing employees")
 public class EmployeeController {
@@ -71,11 +72,16 @@ public class EmployeeController {
         return employeeService.getAll();
     }
 
-//    @GetMapping("/filter-by-page")
-//    @Operation(summary = "Paginated employee list", description = "Fetch employees with pagination")
-//    public Mono<Response> getAllEmployees(@RequestParam Optional<Integer> page,
-//                                          @RequestParam Optional<Integer> size) {
-//        log.info("Fetching employees with pagination. Page: {}, Size: {}", page.orElse(null), size.orElse(null));
-//        return employeeService.getAllPaginatedEmployees(page, size);
-//    }
+
+    @GetMapping("/filter-by-page")
+    @Operation(summary = "Get paginated employees", description = "Fetch employees with optional pagination parameters")
+    public Mono<Response> getPaginatedEmployees(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size) {
+
+        log.info("Fetching employees with pagination. Page: {}, Size: {}", page.orElse(0), size.orElse(10));
+
+        return employeeService.getPaginated(page, size);
+    }
+
 }

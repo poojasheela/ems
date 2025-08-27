@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,11 +12,10 @@ import java.time.LocalDateTime;
 
 public class DepartmentDTO {
 
-//    private String id;
 
     @NotBlank(message = "Department name must not be blank")
     private String name;
-//   @CreatedDate
+
     @CreatedDate
     private Instant createdTimestamp;
 

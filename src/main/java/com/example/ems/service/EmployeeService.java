@@ -22,6 +22,8 @@ public interface EmployeeService {
   Mono<Response> getByName(Optional<String> name);
 
   Mono<Response> getAll();
+
+  Mono<Response> getPaginated(Optional<Integer> page, Optional<Integer> size);
 //
 //  Mono<Response> getAllPaginatedEmployees(Optional<Integer> pageOpt, Optional<Integer> sizeOpt);
 //}

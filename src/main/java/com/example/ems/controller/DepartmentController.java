@@ -1,7 +1,6 @@
 package com.example.ems.controller;
 
 import com.example.ems.dto.DepartmentDTO;
-import com.example.ems.entity.Department;
 import com.example.ems.response.Response;
 import com.example.ems.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/department")
+@RequestMapping("/ems/department")
 @Tag(name = "Department API", description = "Reactive endpoints for managing departments using MongoDB")
 public class DepartmentController {
 
@@ -30,12 +29,15 @@ public class DepartmentController {
         return departmentService.create(dto);
     }
 
+
     @PutMapping("/{id}")
-    @Operation(summary = "Update a department", description = "Updates department details by ID in MongoDB")
-    public Mono<Response> updateDepartment(@PathVariable String id, @Valid @RequestBody DepartmentDTO dto) {
-        log.info("Request received to update department with id {}: {}", id, dto);
+    public Mono<Response> updateDepartment(
+            @PathVariable String id,
+            @Valid @RequestBody DepartmentDTO dto) {
+        log.info("Department update requested for ID {}: {}", id, dto);
         return departmentService.update(id, dto);
     }
+
 
     @GetMapping
     @Operation(summary = "Get all departments", description = "Fetches all departments from MongoDB")

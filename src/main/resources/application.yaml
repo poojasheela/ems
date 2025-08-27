@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/emsDB
+  main:
+    web-application-type: reactive
+
+randomuser:
+  base-url: https://randomuser.me/api
+  enabled: true
+
+server:
+  port: 8080
+  reactive:
+    context-path: /ems
