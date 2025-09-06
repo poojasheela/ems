@@ -1,10 +1,13 @@
 name: Spring reactive build
 
-# ✅ Add workflow_dispatch to allow API/manual triggering
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch:   # <--- important for API triggers
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read       # default, read repo contents
+  workflows: write     # needed to trigger other workflows via API
 
 jobs:
   build:
