@@ -1,15 +1,27 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/emsDB
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
+
   main:
     web-application-type: reactive
 
-randomuser:
-  base-url: https://randomuser.me/api
-  enabled: true
+  cloud:
+    vault:
+      enabled: false   # ✅ Disable Vault for local dev/test
 
 server:
   port: 8080
   reactive:
     context-path: /ems
+
+randomuser:
+  base-url: https://randomuser.me/api
+  enabled: true
+
+github:
+  token: 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
+  owner: poojasheela
+  repo: ems
+  workflow: build.yml
+  ref: main

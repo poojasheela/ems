@@ -1,5 +1,4 @@
 package com.example.ems.controller;
-
 import com.example.ems.dto.DepartmentDTO;
 import com.example.ems.response.Response;
 import com.example.ems.service.DepartmentService;

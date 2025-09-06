@@ -1,9 +1,6 @@
 package com.example.ems.service;
-
 import com.example.ems.dto.EmployeeDTO;
-import com.example.ems.entity.Employee;
 import com.example.ems.response.Response;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.Optional;
 
@@ -24,7 +21,5 @@ public interface EmployeeService {
   Mono<Response> getAll();
 
   Mono<Response> getPaginated(Optional<Integer> page, Optional<Integer> size);
-//
-//  Mono<Response> getAllPaginatedEmployees(Optional<Integer> pageOpt, Optional<Integer> sizeOpt);
-//}
+
 }

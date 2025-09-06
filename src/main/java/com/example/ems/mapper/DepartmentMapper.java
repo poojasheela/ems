@@ -1,5 +1,4 @@
 package com.example.ems.mapper;
-
 import com.example.ems.dto.DepartmentDTO;
 import com.example.ems.entity.Department;
 import org.mapstruct.Mapper;
