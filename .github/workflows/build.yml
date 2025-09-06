@@ -1,13 +1,14 @@
 name: Spring reactive build
 
+# ✅ Add workflow_dispatch to allow API/manual triggering
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:   # <--- important for API triggers
 
-  workflow_dispatch:
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
