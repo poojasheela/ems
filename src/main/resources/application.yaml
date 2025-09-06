@@ -27,7 +27,7 @@ randomuser:
 #  ref: main
 
 github:
-  token: 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
+  token:  ${GITHUB_TOKEN}
   owner: poojasheela
   repo: ems
   workflow: build.yml
