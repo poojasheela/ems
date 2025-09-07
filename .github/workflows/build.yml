@@ -1,9 +1,9 @@
-name: Spring reactive build
+name: Spring Reactive Build
 
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:
+  workflow_dispatch:   # ← This enables manual trigger
 
 permissions:
   contents: read
