@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read       # default, read repo contents
-  workflows: write     # needed to trigger other workflows via API
+  contents: read
+  workflows: write
 
 jobs:
   build:
