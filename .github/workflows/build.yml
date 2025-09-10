@@ -1,11 +1,12 @@
-name: Spring reactive build
+name: Spring Reactive Build
 
+# Trigger workflow manually or on push/pull_request
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:   # ✅ Allow manual/API triggers
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,8 +17,9 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
+        # Dummy healthcheck to avoid GitHub Actions container errors
         options: >-
-          --health-cmd "exit 0"      # ✅ Dummy healthcheck to avoid GitHub Actions errors
+          --health-cmd "exit 0"
           --health-interval 1s
           --health-timeout 1s
           --health-retries 1
@@ -35,17 +37,6 @@ jobs:
       - name: Set environment variables
         run: |
           echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
-
-      - name: Wait for MongoDB to be ready
-        run: |
-          for i in {1..30}; do
-            if nc -z localhost 27017; then
-              echo "MongoDB is up!"
-              break
-            fi
-            echo "Waiting for MongoDB..."
-            sleep 2
-          done
 
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests
