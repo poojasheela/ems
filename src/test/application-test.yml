@@ -1,11 +1,11 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://mongodb:27017/emsDB  # Use the actual hostname for MongoDB container here
+      uri:  ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
 
   cloud:
     vault:
       enabled: false
 
 github:
-  token: test-token
+  token: ${GITHUB_TOKEN}
