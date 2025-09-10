@@ -36,6 +36,14 @@ jobs:
         run: |
           echo "SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/emsDB" >> $GITHUB_ENV
 
+      - name: Wait for MongoDB
+        run: |
+          for i in {1..30}; do
+            nc -z mongodb 27017 && echo "MongoDB is up" && break
+            echo "Waiting for MongoDB..."
+            sleep 5
+          done
+
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests
 
