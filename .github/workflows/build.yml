@@ -1,6 +1,5 @@
 name: Spring Reactive Build
 
-# Trigger workflow manually or on push/pull_request
 on:
   push:
     branches: [ "main" ]
@@ -12,18 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:6.0
-        ports:
-          - 27017:27017
-        # Dummy healthcheck to avoid GitHub Actions container errors
-        options: >-
-          --health-cmd "exit 0"
-          --health-interval 1s
-          --health-timeout 1s
-          --health-retries 1
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -34,12 +21,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Set environment variables
-        run: |
-          echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
-
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests
 
       - name: Run Tests
-        run: mvn test
+        run: mvn test -Dspring.profiles.active=test
