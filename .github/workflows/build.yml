@@ -36,4 +36,4 @@ jobs:
         run: mvn -B clean package -DskipTests
 
       - name: Run Tests with Mongo URI
-        run: mvn test -Dspring.profiles.active=test -Dspring.data.mongodb.uri=mongodb://localhost:27017/emsDB
+        run: mvn test -Dspring.profiles.active=test -Dspring.data.mongodb.uri=mongodb://mongodb:27017/emsDB
