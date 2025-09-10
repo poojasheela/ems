@@ -1,6 +1,5 @@
 name: Spring reactive build
 
-# Allow manual trigger via API or GitHub UI
 on:
   push:
     branches: [ "main" ]
@@ -17,42 +16,36 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
-        options: >-
-          --health-cmd "mongo --quiet --eval 'db.adminCommand(\"ping\")'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        # Remove built-in healthcheck to avoid 'unhealthy'
+        options: "--no-healthcheck"
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Set up JDK 21
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3️⃣ Set environment variables
       - name: Set environment variables
-        run: |
-          echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
+        run: echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
 
-      # 4️⃣ Wait for MongoDB to be ready
+      # Wait until MongoDB is ready
       - name: Wait for MongoDB
         run: |
           for i in {1..30}; do
-            nc -z localhost 27017 && echo "MongoDB is up" && break
+            if nc -z localhost 27017; then
+              echo "MongoDB is up!"
+              break
+            fi
             echo "Waiting for MongoDB..."
             sleep 5
           done
 
-      # 5️⃣ Build the project (skip tests)
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests
 
-      # 6️⃣ Run all tests
       - name: Run Tests
         run: mvn test
