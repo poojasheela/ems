@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(properties = {
-		"spring.cloud.vault.enabled=false" // ⛔ disable Vault in tests
+		"spring.cloud.vault.enabled=false"
 })
 class EmsApplicationTests {
 
 	@Test
 	void contextLoads() {
-		// ✅ passes if the Spring ApplicationContext loads correctly
+
 	}
 }

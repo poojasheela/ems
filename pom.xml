@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version> <!-- ✅ Compatible -->
+		<version>3.3.4</version>
 		<relativePath/>
 	</parent>
 
@@ -38,13 +38,20 @@
 			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/de.flapdoodle.embed/de.flapdoodle.embed.mongo -->
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>4.20.0</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Spring Cloud Vault -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-vault-config</artifactId>
 		</dependency>
 
-		<!-- Spring Security (your entities + exception handler use it) -->
+		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -62,7 +69,7 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Lombok (for @Data, @Slf4j, etc.) -->
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -70,7 +77,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- MapStruct (for DTO → Entity mapping) -->
+		<!-- MapStruct -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
@@ -90,7 +97,7 @@
 			<version>2.6.0</version>
 		</dependency>
 
-		<!-- Test -->
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -111,7 +118,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Spring Cloud BOM for version alignment -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -124,11 +130,13 @@
 
 	<build>
 		<plugins>
+			<!-- Spring Boot Maven Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- MapStruct + Lombok support for annotation processing -->
+
+			<!-- Compiler Plugin for MapStruct + Lombok -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -152,4 +160,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

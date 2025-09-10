@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/emsDB  # Use the actual hostname for MongoDB container here
+
+  cloud:
+    vault:
+      enabled: false
+
+github:
+  token: test-token
