@@ -1,11 +1,11 @@
-spring:
-  data:
-    mongodb:
-      uri:  ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
-
-  cloud:
-    vault:
-      enabled: false
-
-github:
-  token: ${GITHUB_TOKEN}
+#spring:
+#  data:
+#    mongodb:
+#      uri:  ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
+#
+#  cloud:
+#    vault:
+#      enabled: false
+#
+#github:
+#  token: ${GITHUB_TOKEN}
