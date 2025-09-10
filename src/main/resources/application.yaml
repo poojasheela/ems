@@ -1,14 +1,21 @@
 spring:
+  application:
+    name: ems-reactive   # This name is used to lookup secrets in Vault
+
+  cloud:
+    vault:
+      uri: http://localhost:8200
+      token: myroot       # Use your real token or AppRole in production
+      kv:
+        enabled: true
+        backend: secret   # Default KV backend path
+
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
 
   main:
     web-application-type: reactive
-
-  cloud:
-    vault:
-      enabled: false   #  Disable Vault for local dev/test
 
 server:
   port: 8080
@@ -20,7 +27,7 @@ randomuser:
   enabled: true
 
 github:
-  token:  ${GITHUB_TOKEN}
+  token: ${github.token}
   owner: poojasheela
   repo: ems
   workflow: build.yml
