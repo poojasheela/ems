@@ -1,15 +1,27 @@
 name: Spring reactive build
 
+# ✅ Add workflow_dispatch to allow API/manual triggering
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch:   # <--- important for API triggers
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
@@ -20,6 +32,10 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Set environment variables
+        run: |
+          echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
 
       - name: Build with Maven (skip tests)
         run: mvn -B clean package -DskipTests

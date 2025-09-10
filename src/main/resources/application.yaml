@@ -18,13 +18,6 @@ server:
 randomuser:
   base-url: https://randomuser.me/api
   enabled: true
-#
-#github:
-#  token: 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
-#  owner: poojasheela
-#  repo: ems
-#  workflow: build.yml
-#  ref: main
 
 github:
   token:  ${GITHUB_TOKEN}
