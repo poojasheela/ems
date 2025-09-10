@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch:   # ✅ Allow manual/API triggers
 
 jobs:
   build:
@@ -16,8 +16,11 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
-        # Remove built-in healthcheck to avoid 'unhealthy'
-        options: "--no-healthcheck"
+        options: >-
+          --health-cmd "exit 0"      # ✅ Dummy healthcheck to avoid GitHub Actions errors
+          --health-interval 1s
+          --health-timeout 1s
+          --health-retries 1
 
     steps:
       - name: Checkout repository
@@ -30,10 +33,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Set environment variables
-        run: echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
+        run: |
+          echo "SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/emsDB" >> $GITHUB_ENV
 
-      # Wait until MongoDB is ready
-      - name: Wait for MongoDB
+      - name: Wait for MongoDB to be ready
         run: |
           for i in {1..30}; do
             if nc -z localhost 27017; then
@@ -41,7 +44,7 @@ jobs:
               break
             fi
             echo "Waiting for MongoDB..."
-            sleep 5
+            sleep 2
           done
 
       - name: Build with Maven (skip tests)
