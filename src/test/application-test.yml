@@ -3,10 +3,10 @@ spring:
     vault:
       enabled: false
 
-github:
-  token: dummy_test_token
-
 
   data:
     mongodb:
       uri: mongodb://localhost:27017/test
+
+github:
+  token: dummy_test_token

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.SimpleReactiveMongoDatabaseFactory;
-
 @TestConfiguration
 public class TestConfig {
 
