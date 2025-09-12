@@ -1,46 +1,23 @@
 version: '3.8'
 
 services:
-  ems-app:
-    build: .
-    container_name: ems-app
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_CONFIG_IMPORT=vault:
-      - SPRING_CLOUD_VAULT_URI=http://vault:8200
-      - SPRING_CLOUD_VAULT_TOKEN=myroot
-      - SPRING_DATA_MONGODB_URI=mongodb://ems-mongodb:27017/emsDB
-    depends_on:
-      - ems-mongodb
-      - vault
-    networks:
-      - ems-network
-
-  ems-mongodb:
+  mongo:
     image: mongo:6.0
-    container_name: ems-mongodb
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
-    networks:
-      - ems-network
+      - mongo_data:/data/db
 
-  vault:
-    image: hashicorp/vault:1.15.0
-    container_name: vault
-    environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=myroot
-      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+  app:
+    build: .
+    container_name: spring-reactive-app
     ports:
-      - "8200:8200"
-    networks:
-      - ems-network
+      - "8081:8080"
+    depends_on:
+      - mongo
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/emsDB
 
 volumes:
-  mongo-data:
-
-networks:
-  ems-network:
-    driver: bridge
+  mongo_data:

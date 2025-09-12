@@ -1,7 +1,11 @@
-FROM openjdk:21-jdk-slim
-
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-COPY target/ems-reactive-1.0.0.jar ems.jar
-
-ENTRYPOINT ["java", "-jar", "ems.jar"]
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]

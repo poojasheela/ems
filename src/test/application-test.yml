@@ -2,3 +2,5 @@ spring:
   cloud:
     vault:
       enabled: false
+github:
+  token: dummy_test_token
