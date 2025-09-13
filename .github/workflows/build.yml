@@ -27,5 +27,5 @@ jobs:
       - name: Build with Maven (skip tests)
         run: mvn clean package -DskipTests
 
-      - name: Run tests with proper profile
-        run: mvn clean test -Dspring.profiles.active=test
+      - name: Run tests
+        run: mvn test
