@@ -14,11 +14,6 @@ jobs:
   build_and_test:
     runs-on: windows-latest
     steps:
-      - name: Log trigger reason
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "Workflow triggered manually with reason: ${{ github.event.inputs.reason }}"
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -29,8 +24,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build with Maven
-        run: mvn -B clean package -DskipTests
+      - name: Build with Maven (skip tests)
+        run: mvn clean package -DskipTests
 
-      - name: Run tests with Maven
-        run: mvn -B test -Dspring.profiles.active=test
+      - name: Run tests with proper profile
+        run: mvn clean test -Dspring.profiles.active=test
