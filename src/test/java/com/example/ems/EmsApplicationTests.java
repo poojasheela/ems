@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.vault.config.VaultAutoConfiguration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 //
 //@SpringBootTest
@@ -24,6 +25,9 @@ import org.springframework.test.context.ActiveProfiles;
 class EmsApplicationTests {
 	@MockBean
 	private GithubProperties githubProperties;
+
+	@MockBean
+	private ReactiveMongoTemplate mongoTemplate;
 
 	@Test
 	void contextLoads() {}

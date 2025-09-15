@@ -8,7 +8,7 @@ spring:
       uri: mongodb://localhost:27017/test
 
 github:
-  token: dummy_test_token
+  token: dummy-token
   uri: https://api.github.com
   owner: dummy-owner
   repo: dummy-repo
