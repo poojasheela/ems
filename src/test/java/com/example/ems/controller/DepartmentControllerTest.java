@@ -22,8 +22,6 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DepartmentControllerTest {
-    @MockBean
-    private VaultTemplate vaultTemplate;
 
     @Mock
     private DepartmentService departmentService;

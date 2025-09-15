@@ -58,9 +58,6 @@ class EmployeeServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @MockBean
-    private VaultTemplate vaultTemplate;
-
 
     @InjectMocks
     private EmployeeServiceImpl employeeService;

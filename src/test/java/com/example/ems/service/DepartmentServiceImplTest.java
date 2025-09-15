@@ -34,9 +34,6 @@ class DepartmentServiceImplTest {
     private Department department;
     private DepartmentDTO dto;
 
-    @MockBean
-    private VaultTemplate vaultTemplate;
-
 
     @BeforeEach
     void setUp() {

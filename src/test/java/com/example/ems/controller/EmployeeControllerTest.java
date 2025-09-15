@@ -25,8 +25,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeControllerTest {
-    @MockBean
-    private VaultTemplate vaultTemplate;
 
     @Mock
     private EmployeeService employeeService;
