@@ -1,46 +1,46 @@
+#
+#spring:
+#  application:
+#    name: ems-reactive
+#
+#  cloud:
+#    vault:
+#      uri: http://localhost:8200
+#      token:  hvs.ymHCiqn0O8Cil1hAtzQSBBH3
+#      kv:
+#        enabled: true
+#        backend: secret
+#
+#  data:
+#    mongodb:
+#      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
+#  main:
+#    web-application-type: reactive
+#
+#server:
+#  port: 8080
+#  reactive:
+#    context-path: /ems
+#
+#randomuser:
+#  base-url: https://randomuser.me/api
+#  enabled: true
+#
+#github:
+#  token: ${github.token}
+#  owner: poojasheela
+#  repo: ems
+#  workflowFileName: build.yml
+#  ref: main
+#
 
 spring:
   application:
     name: ems-reactive
-
   cloud:
-    vault:
-      uri: http://localhost:8200
-      token:  hvs.ymHCiqn0O8Cil1hAtzQSBBH3
-      kv:
-        enabled: true
-        backend: secret
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
 
-  data:
-    mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/emsDB}
-  main:
-    web-application-type: reactive
-
-server:
-  port: 8080
-  reactive:
-    context-path: /ems
-
-randomuser:
-  base-url: https://randomuser.me/api
-  enabled: true
-
-github:
-  token: ${github.token}
-  owner: poojasheela
-  repo: ems
-  workflowFileName: build.yml
-  ref: main
-
-
-#spring:
-#  application:
-#    name: ems-reactive
-#  cloud:
-#    config:
-#      uri: http://localhost:8888
-#      fail-fast: true
-#
-#  profiles:
-#    active: dev
+  profiles:
+    active: dev

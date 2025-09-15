@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 //	public void contextLoads() {
 //	}
 //}
+
 @SpringBootTest
 @ActiveProfiles("test")
 @EnableAutoConfiguration(excludeName = {
@@ -32,10 +33,10 @@ class EmsApplicationTests {
 	private GithubProperties githubProperties;
 
 	@MockBean
-	private GithubActionServiceImpl githubActionService;
+	private GithubActionServiceImpl githubActionService; // Mock the service
 
 	@MockBean
-	private ReactiveMongoTemplate mongoTemplate;  // <- Mocked
+	private ReactiveMongoTemplate mongoTemplate; // Mock MongoDB
 
 	@Test
 	void contextLoads() {}
