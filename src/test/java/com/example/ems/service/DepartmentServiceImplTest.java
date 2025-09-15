@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.vault.core.VaultTemplate;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import org.mockito.MockitoAnnotations;
@@ -31,6 +33,10 @@ class DepartmentServiceImplTest {
 
     private Department department;
     private DepartmentDTO dto;
+
+    @MockBean
+    private VaultTemplate vaultTemplate;
+
 
     @BeforeEach
     void setUp() {

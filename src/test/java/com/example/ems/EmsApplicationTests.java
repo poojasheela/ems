@@ -13,15 +13,25 @@ import org.springframework.test.context.ActiveProfiles;
 //	public void contextLoads() {
 //	}
 //}
-@SpringBootTest(properties = {
-		"github.token=dummy-token",
-		"github.uri=https://api.github.com",
-		"github.owner=poojasheela",
-		"github.repo=ems",
-		"github.workflowFileName=build.yml"
-})
-public class EmsApplicationTests {
 
+//@SpringBootTest(properties = {
+//		"github.token=dummy-token",
+//		"github.uri=https://api.github.com",
+//		"github.owner=poojasheela",
+//		"github.repo=ems",
+//		"github.workflowFileName=build.yml"
+//})
+//public class EmsApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//}
+@SpringBootTest(
+		classes = EmsApplication.class,
+		properties = {"spring.cloud.vault.enabled=false"}
+)
+class EmsApplicationTests {
 	@Test
 	void contextLoads() {
 	}

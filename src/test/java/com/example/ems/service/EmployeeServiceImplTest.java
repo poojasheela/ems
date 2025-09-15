@@ -16,8 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.vault.core.VaultTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -55,6 +57,10 @@ class EmployeeServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private VaultTemplate vaultTemplate;
+
 
     @InjectMocks
     private EmployeeServiceImpl employeeService;

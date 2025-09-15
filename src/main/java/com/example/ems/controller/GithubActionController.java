@@ -12,22 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-//
-//@RestController
-//@RequestMapping("/ems/github")
-//@RequiredArgsConstructor
-//@Slf4j
-//public class GithubActionController {
-//
-//    private final GithubActionService githubActionService;
-//
-//    @PostMapping("/trigger-workflow")
-//    public Mono<ResponseEntity<Response>> triggerGithubWorkflow() {
-//        log.info("Received request to trigger GitHub workflow");
-//        return githubActionService.triggerWorkflow()
-//                .map(response -> ResponseEntity.status(response.getStatus()).body(response));
-//    }
-//}
 @RestController
 @AllArgsConstructor
 public class GithubActionController {
