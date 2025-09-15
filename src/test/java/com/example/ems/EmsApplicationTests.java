@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-//
-//@SpringBootTest
-//@ActiveProfiles("test")
-//public class EmsApplicationTests {
-//
-//	@Test
-//	public void contextLoads() {
-//	}
-//}
+
+@SpringBootTest
+@ActiveProfiles("test")
+public class EmsApplicationTests {
+
+	@Test
+	public void contextLoads() {
+	}
+}
 
 //@SpringBootTest(properties = {
 //		"github.token=dummy-token",
@@ -26,13 +26,13 @@ import org.springframework.test.context.ActiveProfiles;
 //	@Test
 //	void contextLoads() {
 //	}
+////}
+//@SpringBootTest(
+//		classes = EmsApplication.class,
+//		properties = {"spring.cloud.vault.enabled=false"}
+//)
+//class EmsApplicationTests {
+//	@Test
+//	void contextLoads() {
+//	}
 //}
-@SpringBootTest(
-		classes = EmsApplication.class,
-		properties = {"spring.cloud.vault.enabled=false"}
-)
-class EmsApplicationTests {
-	@Test
-	void contextLoads() {
-	}
-}
