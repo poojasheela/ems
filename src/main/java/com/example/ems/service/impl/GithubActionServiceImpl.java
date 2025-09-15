@@ -1,113 +1,99 @@
 package com.example.ems.service.impl;
 
+import com.example.ems.config.GithubProperties;
 import com.example.ems.response.Response;
 import com.example.ems.service.GithubActionService;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import java.time.Instant;
-import java.util.Map;
+//
 //@Service
 //@Slf4j
 //public class GithubActionServiceImpl implements GithubActionService {
 //
-//    @Value("${github.token}")
-//    private String token;
+//    private final WebClient webClient;
+//    private final String owner;
+//    private final String repo;
+//    private final String workflowFileName;
+//    private final String githubToken;
 //
-//    @Value("${github.owner}")
-//    private String owner;
+//    public GithubActionServiceImpl(
+//            WebClient.Builder webClientBuilder,
+//            @Value("${github.owner}") String owner,
+//            @Value("${github.repo}") String repo,
+//            @Value("${github.workflowFileName}") String workflowFileName,
+//            @Value("${github.token}") String githubToken
+//    ) {
+//        this.owner = owner;
+//        this.repo = repo;
+//        this.workflowFileName = workflowFileName;
+//        this.githubToken = githubToken;
 //
-//    @Value("${github.repo}")
-//    private String repo;
-//
-//    @Value("${github.workflow}")
-//    private String workflow;
-//
-//    @Value("${github.ref}")
-//    private String ref;
-//
-//    private WebClient webClient;
-//    @PostConstruct
-//    public void init() {
-//        this.webClient = WebClient.builder()
-//                .baseUrl("https://api.github.com")
-//                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token.trim())
-//                .defaultHeader(HttpHeaders.ACCEPT, "application/vnd.github+json")
-//                .build();
+//        this.webClient = webClientBuilder.baseUrl("https://api.github.com").build();
 //    }
 //
 //    @Override
-//    public Mono<Response> triggerWorkflow() {
+//    public Mono<Void> triggerWorkflow(String branch, String triggerReason) {
 //        String url = String.format("/repos/%s/%s/actions/workflows/%s/dispatches",
-//                owner, repo, workflow);
+//                owner, repo, workflowFileName);
 //
-//        Map<String, Object> requestBody = Map.of("ref", ref);
-//
-//        log.info("Triggering GitHub Action at URL: {}", url);
+//        String requestBody = String.format("{\"ref\":\"%s\", \"inputs\": {\"reason\":\"%s\"}}", branch, triggerReason);
 //
 //        return webClient.post()
 //                .uri(url)
-//                .bodyValue(requestBody)
+//                .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken)
+//                .header(HttpHeaders.ACCEPT, "application/vnd.github.v3+json")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(BodyInserters.fromValue(requestBody))
 //                .retrieve()
 //                .bodyToMono(Void.class)
-//                .map(voidResp -> new Response(
-//                        Instant.now(),
-//                        200,
-//                        "GitHub workflow triggered successfully",
-//                        null))
-//                .onErrorResume(ex -> {
-//                    log.error("Error triggering GitHub workflow", ex);
-//                    return Mono.just(new Response(
-//                            Instant.now(),
-//                            500,
-//                            "Failed to trigger GitHub workflow: " + ex.getMessage(),
-//                            null));
-//                });
+//                .doOnSuccess(unused -> log.info("Workflow triggered successfully"))
+//                .doOnError(error -> log.error("Failed to trigger workflow", error));
 //    }
 //}
+
+
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GithubActionServiceImpl implements GithubActionService {
 
-        private final WebClient webClient;
-        private final String owner ="poojasheela";
-        private final String repo = "ems";
-        private final String workflowFileName = "Build.yml";
-        private final String githubToken ="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";
+    private WebClient webClient;
+    private final GithubProperties githubProperties;
 
-        public GithubActionServiceImpl(WebClient.Builder webClientBuilder) {
-            this.webClient = webClientBuilder.baseUrl("https://api.github.com").build();
-        }
-        public GithubActionServiceImpl() {
-
-            this(WebClient.builder());
-        }
-
-
-        @Override
-        public Mono<Void> triggerWorkflow(String branch, String triggerReason) {
-            String url = String.format("/repos/%s/%s/actions/workflows/%s/dispatches",
-                    owner, repo, workflowFileName);
-
-
-            String requestBody = String.format("{\"ref\":\"%s\", \"inputs\": {\"reason\":\"%s\"}}", branch, triggerReason);
-
-            return webClient.post()
-                    .uri(url)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken)
-                    .header(HttpHeaders.ACCEPT, "application/vnd.github.v3+json")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(BodyInserters.fromValue(requestBody))
-                    .retrieve()
-                    .bodyToMono(Void.class);
-        }
+    @PostConstruct
+    private void initWebClient() {
+        this.webClient = WebClient.builder()
+                .baseUrl(githubProperties.getUri())
+                .build();
     }
 
+    @Override
+    public Mono<Void> triggerWorkflow(String branch, String triggerReason) {
+        String url = String.format("/repos/%s/%s/actions/workflows/%s/dispatches",
+                githubProperties.getOwner(),
+                githubProperties.getRepo(),
+                githubProperties.getWorkflowFileName());
+
+        String requestBody = String.format("{\"ref\":\"%s\", \"inputs\": {\"reason\":\"%s\"}}",
+                branch,
+                triggerReason);
+
+        return webClient.post()
+                .uri(url)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubProperties.getToken())
+                .header(HttpHeaders.ACCEPT, "application/vnd.github.v3+json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(requestBody))
+                .retrieve()
+                .bodyToMono(Void.class)
+                .doOnSuccess(unused -> log.info("GitHub Workflow triggered successfully"))
+                .doOnError(error -> log.error("Error triggering GitHub Workflow", error));
+    }
+}
