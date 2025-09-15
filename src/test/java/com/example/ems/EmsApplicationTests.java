@@ -24,7 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 @EnableAutoConfiguration(exclude = {
 		VaultAutoConfiguration.class,
-		ReactiveMongoAutoConfiguration.class,
 		WebClientAutoConfiguration.class
 })
 @ActiveProfiles("test")
